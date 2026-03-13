@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Upload Your Asset - The Grand Gallery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-red: #d11a2a;
+            --accent-green: #2e5b29;
+            --wood-light: #f8f4e7;
+            --text-primary: #333;
+            --text-secondary: #666;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Raleway', sans-serif;
+            background-color: var(--wood-light);
+            color: var(--text-primary);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        /* Red carpet element */
+        .red-carpet {
+            position: absolute;
+            width: 100%;
+            height: 8px;
+            background-color: var(--primary-red);
+            top: 0;
+            left: 0;
+            z-index: 1;
+            border-radius: 20px;
+            box-shadow: inset 0 -5px 40px rgba(0,0,0,0.3), 
+                        0 0 80px rgba(217, 26, 42, 0.2);
+        }
+
+        /* Main container with sharp edges */
+        .main-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 24px;
+            box-shadow: 0 15px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Header section */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            text-shadow: 2px 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-family: 'Raleway', sans-serif;
+            font-size: 1.3rem;
+            margin-top: 0.5rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Upload steps section */
+        .upload-steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background-color: var(--wood-light);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+        }
+        
+        .step {
+            flex: 1;
+            min-width: 240px;
+            padding: 1.8rem;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+        
+        .step:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 18px 60px rgba(0,0,0,0.1);
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-red);
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .step h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 1rem;
+        }
+
+        /* Form section */
+        .upload-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+            margin-bottom: 3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-red);
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 4px rgba(217, 26, 42, 0.1);
+        }
+
+        /* File upload section */
+        .file-upload {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border: 2px dashed #ccc;
+            border-radius: 16px;
+            background-color: #f9f9f9;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--primary-red);
+            background-color: rgba(217, 26, 42, 0.05);
+            transform: translateY(-3px);
+        }
+
+        /* Button section */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        button {
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 15px 60px rgba(0,0,0,0.3);
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            color: var(--primary-red);
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 24px;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background-color: var(--accent-green);
+            transition: all 0.4s ease;
+        }
+        
+        nav a:hover {
+            color: #fff;
+            background-color: var(--primary-red);
+            font-weight: 700;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255,255,255,0.9);
+            border-radius: 30px;
+            padding: 0.8rem 1.2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--primary-red);
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background-color: rgba(255,255,255,1);
+            transform: translateY(-2px);
+        }
+
+        /* Spruce wood decorative elements */
+        .wood-decoration {
+            position: absolute;
+            z-index: 0;
+            opacity: 0.3;
+        }
+        
+        .wood-decoration-1 { top: -10%; left: 10%; transform: rotate(45deg); }
+        .wood-decoration-2 { bottom: -15%; right: 15%; transform: rotate(-30deg); }
+        .wood-decoration-3 { top: 80%; left: 20%; transform: rotate(60deg); }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .upload-steps {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step {
+                min-width: auto;
+                margin-bottom: 1.5rem;
+            }
+            
+            nav {
+                flex-wrap: wrap;
+                gap: 0.8rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animated-element {
+            animation: fadeInUp 2s ease-in-out;
+        }
+
+        /* Dark mode styling */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .red-carpet {
+            background-color: rgba(217, 26, 42, 0.3);
+        }
+
+        /* Add subtle animations to elements */
+        .file-upload::after {
+            content: 'Drag & drop your file here or click to browse';
+            display: block;
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <!-- Red carpet element -->
+    <div class="red-carpet"></div>
+
+    <!-- Spruce wood decorative elements -->
+    <div class="wood-decoration wood-decoration-1"></div>
+    <div class="wood-decoration wood-decoration-2"></div>
+    <div class="wood-decoration wood-decoration-3"></div>
+
+    <!-- Theme toggle button -->
+    <button class="theme-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+    <!-- Main content container -->
+    <div class="main-container">
+        <header class="header">
+            <h1>Upload Your 3D Asset</h1>
+            <p>Create a new collection of 3D models and share them with the community. Follow our guided steps to upload your work seamlessly.</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav>
+            <a href="home.html">Back to Gallery</a>
+            <a href="dashboard.html">My Dashboard</a>
+        </nav>
+
+        <!-- Upload steps section -->
+        <div class="upload-steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Choose Your Asset</h3>
+                <p>Select the file format (GLB, GLTF, FBX, OBJ) and upload your 3D model.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Provide Details</h3>
+                <p>Add a title, description, tags, and licensing information about your asset.</p>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Review & Publish</h3>
+                <p>Check all details before publishing to the community catalog.</p>
+            </div>
+        </div>
+
+        <!-- Upload form -->
+        <div class="upload-form">
+            <form id="asset-upload-form">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" placeholder="Enter a descriptive title" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" rows="4" placeholder="Describe your 3D model in detail..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="tags">Tags (comma-separated)</label>
+                    <input type="text" id="tags" placeholder="e.g., cyberpunk, vehicle, game development" />
+                </div>
+
+                <div class="form-group">
+                    <label for="license">License</label>
+                    <select id="license" required>
+                        <option value="">Select a license...</option>
+                        <option value="cc-by-nc-nd">Creative Commons Attribution-NonCommercial-NoDerivatives (CC BY-NC-ND)</option>
+                        <option value="cc-by-sa">Creative Commons Attribution-ShareAlike (CC BY-SA)</option>
+                        <option value="cc0">Public Domain (CC0)</option>
+                        <option value="custom">Custom License</option>
+                    </select>
+                </div>
+
+                <!-- File upload section -->
+                <div class="file-upload" id="file-drop-area">
+                    Drag & drop your file here or click to browse
+                </div>
+
+                <input type="hidden" id="file-name-input" />
+                
+                <!-- Buttons -->
+                <div class="button-group">
+                    <button type="button" onclick="previousStep()">← Previous</button>
+                    <button type="submit">Next →</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Call to action -->
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="dashboard.html" style="display: inline-block; padding: 1.2rem 2.5rem; background-color: var(--primary-red); color: white; text-decoration: none; font-weight: bold; border-radius: 30px; box-shadow: 0 8px 40px rgba(217, 26, 42, 0.3); transition: all 0.4s ease;">
+                View My Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Toggle dark mode function
+        function toggleDarkMode() {
+            const body = document.body;
+            
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                body.style.backgroundColor = 'var(--wood-light)';
+                body.style.color = var(--text-primary);
+                
+                // Update theme toggle text
+                document.querySelector('.theme-toggle').textContent = "Toggle Dark Mode";
+                
+                // Change red carpet color to original
+                const redCarpet = document.querySelector('.red-carpet');
+                redCarpet.style.backgroundColor = 'var(--primary-red)';
+            } else {
+                body.classList.add('dark-mode');
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#e0e0e0';
+                
+                // Update theme toggle text
+                document.querySelector('.theme-toggle').textContent = "Toggle Light Mode";
+                
+                // Change red carpet color to dark mode variant
+                const redCarpet = document.querySelector('.red-carpet');
+                redCarpet.style.backgroundColor = 'rgba(217, 26, 42, 0.3)';
+            }
+        }
+
+        // File upload functionality
+        const fileDropArea = document.getElementById('file-drop-area');
+        
+        // Add drag and drop functionality
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileDropArea.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (eventName === 'dragenter' || eventName === 'dragover') {
+                    fileDropArea.style.borderColor = 'var(--primary-red)';
+                    fileDropArea.style.backgroundColor = 'rgba(217, 26, 42, 0.05)';
+                } else if (eventName === 'dragleave') {
+                    fileDropArea.style.borderColor = '#ccc';
+                    fileDropArea.style.backgroundColor = '#f9f9f9';
+                }
+            });
+        });
+
+        // Handle file drop
+        fileDropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+                
+                // Reset visual state
+                fileDropArea.style.borderColor = '#ccc';
+                fileDropArea.style.backgroundColor = '#f9f9f9';
+            }
+        });
+
+        // Handle file selection via browse button
+        fileDropArea.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.glb,.gltf,.fbx,.obj';
+            
+            input.onchange = (e) => {
+                if (e.target.files.length > 0) {
+                    handleFile(e.target.files[0]);
+                    
+                    // Reset visual state
+                    fileDropArea.style.borderColor = '#ccc';
+                    fileDropArea.style.backgroundColor = '#f9f9f9';
+                }
+            };
+            
+            input.click();
+        });
+
+        function handleFile(file) {
+            const fileNameInput = document.getElementById('file-name-input');
+            fileNameInput.value = file.name;
+            
+            // Add visual feedback
+            fileDropArea.innerHTML = `<strong>✓ File uploaded: ${file.name}</strong><br/>Format: ${getFileType(file.name)}<br/><small>${(file.size / 1024 / 1024).toFixed(2)} MB</small>`;
+            
+            // Add a subtle animation
+            fileDropArea.style.animation = 'pulse 1s ease-in-out';
+            
+            setTimeout(() => {
+                fileDropArea.style.animation = '';
+            }, 800);
+        }
+
+        function getFileType(filename) {
+            const extensions = {
+                '.glb': 'GLB (Binary GLTF)',
+                '.gltf': 'GLTF (JSON/GLB)',
+                '.fbx': 'FBX',
+                '.obj': 'OBJ'
+            };
+            
+            return extensions[filename.toLowerCase().split('.').pop()] || 'Unknown Format';
+        }
+
+        // Navigation between steps
+        function previousStep() {
+            const form = document.getElementById('asset-upload-form');
+            alert("Navigating to previous step... In a real implementation, this would handle navigation between steps.");
+        }
+
+        // Add smooth scroll to anchor links in nav
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = this.getAttribute('href');
+                if (target === '#') return;
+                
+                const element = document.querySelector(target);
+                if (element) {
+                    window.scrollTo({
+                        top: element.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add a subtle animation to the header text
+        setTimeout(() => {
+            const h1 = document.querySelector('.header h1');
+            h1.style.animation = 'fadeInUp 2s ease-in-out';
+            
+            const p = document.querySelector('.header p');
+            p.style.animation = 'fadeInUp 2.5s ease-in-out 0.3s both';
+        }, 100);
+
+        // Add animation to upload steps
+        const uploadSteps = document.querySelectorAll('.step');
+        
+        uploadSteps.forEach((step, index) => {
+            step.style.opacity = '0';
+            step.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                step.style.transition = 'all 0.6s ease';
+                step.style.opacity = '1';
+                step.style.transform = 'translateY(0)';
+            }, index * 300);
+        });
+
+        // Add a subtle animation to the form
+        const uploadForm = document.querySelector('.upload-form');
+        
+        setTimeout(() => {
+            uploadForm.style.animation = 'fadeInUp 2s ease-in-out';
+        }, 400);
+
+        // Add a subtle animation to the navigation links
+        const navLinks = document.querySelectorAll('nav a');
+        
+        navLinks.forEach((link, index) => {
+            link.addEventListener('mouseenter', () => {
+                link.style.transform = 'scale(1.05)';
+                link.style.boxShadow = '0 6px 25px rgba(217, 26, 42, 0.3)';
+            });
+            
+            link.addEventListener('mouseleave', () => {
+                link.style.transform = '';
+                link.style.boxShadow = '';
+            });
+        });
+
+        // Add a subtle animation to the wood decorations
+        const woodDecorations = document.querySelectorAll('.wood-decoration');
+        
+        woodDecorations.forEach((decor, index) => {
+            setTimeout(() => {
+                decor.style.opacity = '0.4';
+                
+                // Make it slightly move with subtle animation
+                decor.style.animation = `float ${5 + (index * 2)}s ease-in-out infinite`;
+            }, index * 1000);
+        });
+
+        // Add a custom CSS keyframe for the float animation
+        const styleTag = document.createElement('style');
+        styleTag.innerHTML = `
+            @keyframes float {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-2px) rotate(3deg); }
+            }
+        `;
+        
+        document.head.appendChild(styleTag);
+
+        // Add a subtle animation to the red carpet
+        const redCarpet = document.querySelector('.red-carpet');
+        
+        setInterval(() => {
+            redCarpet.style.animation = 'pulse 2s ease-in-out';
+            
+            setTimeout(() => {
+                redCarpet.style.animation = '';
+            }, 1000);
+        }, 5000);
+
+        // Add click animations to buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+                button.style.transform = 'scale(1.05)';
+                button.style.boxShadow = '0 8px 30px rgba(217, 26, 42, 0.3)';
+                
+                setTimeout(() => {
+                    button.style.transform = '';
+                    button.style.boxShadow = '';
+                }, 200);
+            });
+        });
+
+    </script>
+</body>
+</html>
