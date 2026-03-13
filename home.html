@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>3D Model: Cyberpunk Vehicle - The Grand Gallery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-red: #d11a2a;
+            --accent-green: #2e5b29;
+            --wood-light: #f8f4e7;
+            --text-primary: #333;
+            --text-secondary: #666;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Raleway', sans-serif;
+            background-color: var(--wood-light);
+            color: var(--text-primary);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        /* Red carpet element */
+        .red-carpet {
+            position: absolute;
+            width: 100%;
+            height: 8px;
+            background-color: var(--primary-red);
+            top: 0;
+            left: 0;
+            z-index: 1;
+            border-radius: 20px;
+            box-shadow: inset 0 -5px 40px rgba(0,0,0,0.3), 
+                        0 0 80px rgba(217, 26, 42, 0.2);
+        }
+
+        /* Main container with sharp edges */
+        .main-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 24px;
+            box-shadow: 0 15px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Header section */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            text-shadow: 2px 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-family: 'Raleway', sans-serif;
+            font-size: 1.3rem;
+            margin-top: 0.5rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Model preview section */
+        .model-preview {
+            position: relative;
+            height: 600px;
+            border-radius: 24px;
+            overflow: hidden;
+            background-color: #eaeaea;
+            margin-bottom: 3rem;
+            box-shadow: 0 15px 60px rgba(0,0,0,0.1);
+        }
+        
+        .model-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,10 C70,10 90,30 90,50 C90,70 70,90 50,90 C30,90 10,70 10,50 C10,30 30,10 50,10 Z" fill="%232e5b29"/></svg>');
+            background-size: cover;
+            opacity: 0.1;
+        }
+
+        /* Model details */
+        .model-details {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .details-left {
+            padding: 1.5rem;
+            background-color: var(--wood-light);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+        }
+        
+        .details-right {
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+        }
+
+        /* Rating section */
+        .rating-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+        }
+        
+        .rating-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .rating-stars {
+            font-size: 2rem;
+            color: #f9c43a;
+        }
+        
+        .rating-count {
+            font-weight: bold;
+            color: var(--primary-red);
+        }
+
+        /* Download section */
+        .download-section {
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            background-color: var(--wood-light);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+        }
+        
+        .download-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Tags section */
+        .tags-container {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+        }
+        
+        .tags-list {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background-color: var(--primary-red);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            color: var(--primary-red);
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 24px;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background-color: var(--accent-green);
+            transition: all 0.4s ease;
+        }
+        
+        nav a:hover {
+            color: #fff;
+            background-color: var(--primary-red);
+            font-weight: 700;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255,255,255,0.9);
+            border-radius: 30px;
+            padding: 0.8rem 1.2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--primary-red);
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background-color: rgba(255,255,255,1);
+            transform: translateY(-2px);
+        }
+
+        /* Spruce wood decorative elements */
+        .wood-decoration {
+            position: absolute;
+            z-index: 0;
+            opacity: 0.3;
+        }
+        
+        .wood-decoration-1 { top: -10%; left: 10%; transform: rotate(45deg); }
+        .wood-decoration-2 { bottom: -15%; right: 15%; transform: rotate(-30deg); }
+        .wood-decoration-3 { top: 80%; left: 20%; transform: rotate(60deg); }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .model-details {
+                grid-template-columns: 1fr;
+            }
+            
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animated-element {
+            animation: fadeInUp 2s ease-in-out;
+        }
+
+        /* Dark mode styling */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .red-carpet {
+            background-color: rgba(217, 26, 42, 0.3);
+        }
+
+        /* Add subtle animations to elements */
+        .model-preview::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80px;
+            height: 80px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23d11a2a" opacity="0.2"/></svg>');
+            background-size: cover;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Red carpet element -->
+    <div class="red-carpet"></div>
+
+    <!-- Spruce wood decorative elements -->
+    <div class="wood-decoration wood-decoration-1"></div>
+    <div class="wood-decoration wood-decoration-2"></div>
+    <div class="wood-decoration wood-decoration-3"></div>
+
+    <!-- Theme toggle button -->
+    <button class="theme-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+    <!-- Main content container -->
+    <div class="main-container">
+        <header class="header">
+            <h1>Cyberpunk Vehicle (2045)</h1>
+            <p>High-detail 3D model of a futuristic cyberpunk vehicle with advanced technology and sleek design. Perfect for game developers creating immersive worlds.</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav>
+            <a href="home.html">Back to Gallery</a>
+            <a href="explore.html">Explore More Assets</a>
+            <a href="upload.html">Upload Your Work</a>
+        </nav>
+
+        <!-- Model preview section -->
+        <div class="model-preview">
+            <!-- Placeholder for 3D model viewer - in a real implementation, this would be a Three.js scene -->
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; color: var(--primary-red);">
+                🚗 This is where your 3D model would be rendered using Three.js
+            </div>
+        </div>
+
+        <!-- Model details -->
+        <div class="model-details">
+            <div class="details-left">
+                <h2>Model Information</h2>
+                <p><strong>Type:</strong> Vehicle (Cyberpunk)</p>
+                <p><strong>Format:</strong> GLB, FBX, OBJ</p>
+                <p><strong>Size:</strong> 50x40x30 units</p>
+                <p><strong>License:</strong> Attribution-NonCommercial-NoDerivatives (CC BY-NC-ND)</p>
+                <p><strong>Author:</strong> Alex Chen</p>
+                <p><strong>Date Added:</strong> March 12, 2026</p>
+            </div>
+
+            <div class="details-right">
+                <h2>Asset Description</h2>
+                <p>This highly detailed cyberpunk vehicle features advanced technology including holographic displays, magnetic propulsion systems, and adaptive camouflage. The model includes realistic materials such as polished chrome, matte black surfaces, and glowing neon elements.</p>
+                
+                <h3>Features:</h3>
+                <ul style="margin-left: 1rem;">
+                    <li>Sleek futuristic design with flowing curves</li>
+                    <li>Multiple lighting effects including ambient and directional lights</li>
+                    <li>Interactive components that respond to user input in the viewer</li>
+                    <li>High-resolution textures for realistic appearance</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Rating section -->
+        <div class="rating-section">
+            <h2>Community Ratings</h2>
+            <div class="rating-container">
+                <span class="rating-stars">★★★★☆ (4.8/5)</span>
+                <span class="rating-count">(1,237 votes)</span>
+            </div>
+            
+            <!-- Rating buttons -->
+            <div style="margin-top: 1rem;">
+                <button onclick="voteUp()" style="padding: 0.8rem 1.6rem; background-color: var(--primary-red); color: white; border-radius: 30px; margin-right: 1rem; font-weight: bold; cursor: pointer;">👍 Up</button>
+                <button onclick="voteDown()" style="padding: 0.8rem 1.6rem; background-color: #e0e0e0; color: var(--text-primary); border-radius: 30px; font-weight: bold; cursor: pointer;">👎 Down</button>
+            </div>
+        </div>
+
+        <!-- Download section -->
+        <div class="download-section">
+            <h2>Download This Asset</h2>
+            <p>Get the complete model files in multiple formats for use across different game engines and applications.</p>
+            
+            <div class="download-buttons">
+                <button style="padding: 0.8rem 1.6rem; background-color: var(--primary-red); color: white; border-radius: 30px; font-weight: bold; cursor: pointer;">Download GLB (Recommended)</button>
+                <button style="padding: 0.8rem 1.6rem; background-color: #e0e0e0; color: var(--text-primary); border-radius: 30px; font-weight: bold; cursor: pointer;">Download FBX</button>
+            </div>
+        </div>
+
+        <!-- Tags section -->
+        <div class="tags-container">
+            <h2>Tags & Categories</h2>
+            <div class="tags-list">
+                <span class="tag">cyberpunk</span>
+                <span class="tag">vehicle</span>
+                <span class="tag">futuristic</span>
+                <span class="tag">game development</span>
+                <span class="tag">3d modeling</span>
+                <span class="tag">neon lights</span>
+            </div>
+        </div>
+
+        <!-- Call to action -->
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="upload.html" style="display: inline-block; padding: 1.2rem 2.5rem; background-color: var(--primary-red); color: white; text-decoration: none; font-weight: bold; border-radius: 30px; box-shadow: 0 8px 40px rgba(217, 26, 42, 0.3); transition: all 0.4s ease;">
+                Upload Your First Asset
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Toggle dark mode function
+        function toggleDarkMode() {
+            const body = document.body;
+            
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                body.style.backgroundColor = 'var(--wood-light)';
+                body.style.color = var(--text-primary);
+                
+                // Update theme toggle text
+                document.querySelector('.theme-toggle').textContent = "Toggle Dark Mode";
+                
+                // Change red carpet color to original
+                const redCarpet = document.querySelector('.red-carpet');
+                redCarpet.style.backgroundColor = 'var(--primary-red)';
+            } else {
+                body.classList.add('dark-mode');
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#e0e0e0';
+                
+                // Update theme toggle text
+                document.querySelector('.theme-toggle').textContent = "Toggle Light Mode";
+                
+                // Change red carpet color to dark mode variant
+                const redCarpet = document.querySelector('.red-carpet');
+                redCarpet.style.backgroundColor = 'rgba(217, 26, 42, 0.3)';
+            }
+        }
+
+        // Add smooth scroll to anchor links in nav
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = this.getAttribute('href');
+                if (target === '#') return;
+                
+                const element = document.querySelector(target);
+                if (element) {
+                    window.scrollTo({
+                        top: element.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add a subtle animation to the header text
+        setTimeout(() => {
+            const h1 = document.querySelector('.header h1');
+            h1.style.animation = 'fadeInUp 2s ease-in-out';
+            
+            const p = document.querySelector('.header p');
+            p.style.animation = 'fadeInUp 2.5s ease-in-out 0.3s both';
+        }, 100);
+
+        // Add animation to model details
+        const modelDetails = document.querySelectorAll('.model-details > div');
+        
+        modelDetails.forEach((detail, index) => {
+            detail.style.opacity = '0';
+            detail.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                detail.style.transition = 'all 0.6s ease';
+                detail.style.opacity = '1';
+                detail.style.transform = 'translateY(0)';
+            }, index * 300);
+        });
+
+        // Add a subtle animation to the rating section
+        const ratingSection = document.querySelector('.rating-section');
+        
+        setTimeout(() => {
+            ratingSection.style.animation = 'fadeInUp 2s ease-in-out';
+        }, 400);
+
+        // Add a subtle animation to the download section
+        const downloadSection = document.querySelector('.download-section');
+        
+        setTimeout(() => {
+            downloadSection.style.animation = 'fadeInUp 2.5s ease-in-out 0.8s both';
+        }, 600);
+
+        // Add a subtle animation to the tags section
+        const tagsSection = document.querySelector('.tags-container');
+        
+        setTimeout(() => {
+            tagsSection.style.animation = 'fadeInUp 3s ease-in-out 1.2s both';
+        }, 800);
+
+        // Add a subtle animation to navigation links
+        const navLinks = document.querySelectorAll('nav a');
+        
+        navLinks.forEach((link, index) => {
+            link.addEventListener('mouseenter', () => {
+                link.style.transform = 'scale(1.05)';
+                link.style.boxShadow = '0 6px 25px rgba(217, 26, 42, 0.3)';
+            });
+            
+            link.addEventListener('mouseleave', () => {
+                link.style.transform = '';
+                link.style.boxShadow = '';
+            });
+        });
+
+        // Add a subtle animation to the model preview
+        const modelPreview = document.querySelector('.model-preview');
+        
+        setTimeout(() => {
+            modelPreview.style.animation = 'fadeInUp 2s ease-in-out';
+        }, 100);
+
+        // Add a subtle animation to the wood decorations
+        const woodDecorations = document.querySelectorAll('.wood-decoration');
+        
+        woodDecorations.forEach((decor, index) => {
+            setTimeout(() => {
+                decor.style.opacity = '0.4';
+                
+                // Make it slightly move with subtle animation
+                decor.style.animation = `float ${5 + (index * 2)}s ease-in-out infinite`;
+            }, index * 1000);
+        });
+
+        // Add a custom CSS keyframe for the float animation
+        const styleTag = document.createElement('style');
+        styleTag.innerHTML = `
+            @keyframes float {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-2px) rotate(3deg); }
+            }
+        `;
+        
+        document.head.appendChild(styleTag);
+
+        // Rating voting functionality
+        function voteUp() {
+            const stars = document.querySelector('.rating-stars');
+            let currentRating = parseFloat(stars.textContent.replace(/[^0-9.]/g, ''));
+            
+            if (currentRating < 5) {
+                currentRating += 0.1;
+                stars.textContent = `★★★★☆ (${currentRating.toFixed(1)}/5)`;
+                
+                // Add a visual effect
+                stars.style.color = '#f9c43a';
+                setTimeout(() => {
+                    stars.style.color = '#f9c43a'; // Reset to original color after animation
+                }, 200);
+            }
+        }
+
+        function voteDown() {
+            const stars = document.querySelector('.rating-stars');
+            let currentRating = parseFloat(stars.textContent.replace(/[^0-9.]/g, ''));
+            
+            if (currentRating > 1) {
+                currentRating -= 0.1;
+                stars.textContent = `★★★★☆ (${currentRating.toFixed(1)}/5)`;
+                
+                // Add a visual effect
+                stars.style.color = '#f9c43a';
+                setTimeout(() => {
+                    stars.style.color = '#f9c43a'; // Reset to original color after animation
+                }, 200);
+            }
+        }
+
+        // Add click animations to buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', () => {
+                button.style.transform = 'scale(1.05)';
+                button.style.boxShadow = '0 8px 30px rgba(217, 26, 42, 0.3)';
+                
+                setTimeout(() => {
+                    button.style.transform = '';
+                    button.style.boxShadow = '';
+                }, 200);
+            });
+        });
+
+        // Add a subtle animation to the red carpet
+        const redCarpet = document.querySelector('.red-carpet');
+        
+        setInterval(() => {
+            redCarpet.style.animation = 'pulse 2s ease-in-out';
+            
+            setTimeout(() => {
+                redCarpet.style.animation = '';
+            }, 1000);
+        }, 5000);
+
+    </script>
+</body>
+</html>
