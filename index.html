@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>The Grand Gallery - 3D Asset Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-red: #d11a2a;
+            --accent-green: #2e5b29;
+            --wood-light: #f8f4e7;
+            --wood-dark: #c3a06a;
+            --text-primary: #333;
+            --text-secondary: #666;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Raleway', sans-serif;
+            background-color: var(--wood-light);
+            color: var(--text-primary);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        /* Red carpet element - the main visual feature */
+        .red-carpet {
+            position: absolute;
+            width: 100%;
+            height: 8px;
+            background-color: var(--primary-red);
+            top: 0;
+            left: 0;
+            z-index: 1;
+            border-radius: 20px;
+            box-shadow: inset 0 -5px 40px rgba(0,0,0,0.3), 
+                        0 0 80px rgba(217, 26, 42, 0.2);
+        }
+
+        /* Main container with sharp edges */
+        .main-container {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 24px;
+            box-shadow: 0 15px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Header section */
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            text-shadow: 2px 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-family: 'Raleway', sans-serif;
+            font-size: 1.3rem;
+            margin-top: 0.5rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Feature highlights */
+        .features {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-card {
+            flex: 1;
+            min-width: 240px;
+            padding: 1.8rem;
+            background-color: var(--wood-light);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 18px 60px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-red);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            margin-top: 0.5rem;
+            color: var(--accent-green);
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        nav a {
+            text-decoration: none;
+            font-weight: 600;
+            color: var(--primary-red);
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 24px;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background-color: var(--accent-green);
+            transition: all 0.4s ease;
+        }
+        
+        nav a:hover {
+            color: #fff;
+            background-color: var(--primary-red);
+            font-weight: 700;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav {
+                flex-wrap: wrap;
+                gap: 0.8rem;
+            }
+        }
+
+        /* Dark mode toggle */
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: rgba(255,255,255,0.9);
+            border-radius: 30px;
+            padding: 0.8rem 1.2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--primary-red);
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background-color: rgba(255,255,255,1);
+            transform: translateY(-2px);
+        }
+
+        /* Spruce wood decorative elements */
+        .wood-decoration {
+            position: absolute;
+            z-index: 0;
+            opacity: 0.3;
+        }
+        
+        .wood-decoration::before {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2.0" viewBox="0 0 100 100"><path d="M50,10 C70,10 90,30 90,50 C90,70 70,90 50,90 C30,90 10,70 10,50 C10,30 30,10 50,10 Z" fill="%232e5b29"/></svg>');
+            background-size: cover;
+            border-radius: 80px;
+        }
+        
+        .wood-decoration-1 { top: -10%; left: 10%; transform: rotate(45deg); }
+        .wood-decoration-2 { bottom: -15%; right: 15%; transform: rotate(-30deg); }
+        .wood-decoration-3 { top: 80%; left: 20%; transform: rotate(60deg); }
+    </style>
+</head>
+<body>
+    <!-- Red carpet element -->
+    <div class="red-carpet"></div>
+
+    <!-- Spruce wood decorative elements -->
+    <div class="wood-decoration wood-decoration-1"></div>
+    <div class="wood-decoration wood-decoration-2"></div>
+    <div class="wood-decoration wood-decoration-3"></div>
+
+    <!-- Theme toggle button -->
+    <button class="theme-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+
+    <!-- Main content container -->
+    <div class="main-container">
+        <header class="header">
+            <h1>Welcome to The Grand Gallery</h1>
+            <p>Discover, share, and download premium 3D models for game developers and modding communities. Experience the elegance of a luxury hotel with our sophisticated platform.</p>
+        </header>
+
+        <!-- Navigation -->
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="explore.html">Explore Assets</a>
+            <a href="upload.html">Upload Your Work</a>
+            <a href="dashboard.html">My Dashboard</a>
+        </nav>
+
+        <!-- Feature highlights -->
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>Search & Browse</h3>
+                <p>Find exactly what you need with advanced search filters, tags, and categories. Our intuitive interface makes discovering the perfect 3D model effortless.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⭐️</div>
+                <h3>Community Rating</h3>
+                <p>Join our community rating system where users vote 'up' or 'down' on assets. Popular models rise to the top based on engagement and quality.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📥</div>
+                <h3>Download & Use</h3>
+                <p>Download your favorite 3D models with ease. All assets are provided in industry-standard formats for use across games, engines, and applications.</p>
+            </div>
+        </div>
+
+        <!-- Call to action -->
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="upload.html" style="display: inline-block; padding: 1.2rem 2.5rem; background-color: var(--primary-red); color: white; text-decoration: none; font-weight: bold; border-radius: 30px; box-shadow: 0 8px 40px rgba(217, 26, 42, 0.3); transition: all 0.4s ease;">
+                Upload Your First Asset
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Toggle dark mode function
+        function toggleDarkMode() {
+            const body = document.body;
+            
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                body.style.backgroundColor = 'var(--wood-light)';
+                body.style.color = var(--text-primary);
+                
+                // Update theme toggle text
+                document.querySelector('.theme-toggle').textContent = "Toggle Dark Mode";
+                
+                // Change red carpet color to original
+                const redCarpet = document.querySelector('.red-carpet');
+                redCarpet.style.backgroundColor = 'var(--primary-red)';
+            } else {
+                body.classList.add('dark-mode');
+                body.style.backgroundColor = '#1a1a1a';
+                body.style.color = '#e0e0e0';
+                
+                // Update theme toggle text
+                document.querySelector('.theme-toggle').textContent = "Toggle Light Mode";
+                
+                // Change red carpet color to dark mode variant
+                const redCarpet = document.querySelector('.red-carpet');
+                redCarpet.style.backgroundColor = 'rgba(217, 26, 42, 0.3)';
+            }
+        }
+
+        // Add smooth scroll to anchor links in nav
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const target = this.getAttribute('href');
+                if (target === '#') return;
+                
+                const element = document.querySelector(target);
+                if (element) {
+                    window.scrollTo({
+                        top: element.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add smooth scroll to any anchor links in the page
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A' && e.target.getAttribute('href') !== '#' && 
+                e.target.getAttribute('href').startsWith('#')) {
+                
+                const target = e.target.getAttribute('href');
+                const element = document.querySelector(target);
+                
+                if (element) {
+                    window.scrollTo({
+                        top: element.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+
+        // Add a subtle animation to the header text
+        setTimeout(() => {
+            const h1 = document.querySelector('.header h1');
+            h1.style.animation = 'fadeInUp 2s ease-in-out';
+            
+            const p = document.querySelector('.header p');
+            p.style.animation = 'fadeInUp 2.5s ease-in-out 0.3s both';
+        }, 100);
+
+        // Add animation to feature cards
+        const featureCards = document.querySelectorAll('.feature-card');
+        
+        featureCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                card.style.transition = 'all 0.6s ease';
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 300);
+        });
+
+        // Add a subtle animation to the navigation links
+        const navLinks = document.querySelectorAll('nav a');
+        
+        navLinks.forEach((link, index) => {
+            link.addEventListener('mouseenter', () => {
+                link.style.transform = 'scale(1.05)';
+                link.style.boxShadow = '0 6px 25px rgba(217, 26, 42, 0.3)';
+            });
+            
+            link.addEventListener('mouseleave', () => {
+                link.style.transform = '';
+                link.style.boxShadow = '';
+            });
+        });
+
+        // Add a subtle animation to the red carpet
+        const redCarpet = document.querySelector('.red-carpet');
+        
+        setInterval(() => {
+            redCarpet.style.animation = 'pulse 2s ease-in-out';
+            
+            setTimeout(() => {
+                redCarpet.style.animation = '';
+            }, 1000);
+        }, 5000);
+
+        // Add a subtle animation to the wood decorations
+        const woodDecorations = document.querySelectorAll('.wood-decoration');
+        
+        woodDecorations.forEach((decor, index) => {
+            setTimeout(() => {
+                decor.style.opacity = '0.4';
+                
+                // Make it slightly move with subtle animation
+                decor.style.animation = `float ${5 + (index * 2)}s ease-in-out infinite`;
+            }, index * 1000);
+        });
+
+        // Add a custom CSS keyframe for the float animation
+        const styleTag = document.createElement('style');
+        styleTag.innerHTML = `
+            @keyframes float {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-2px) rotate(3deg); }
+            }
+        `;
+        
+        document.head.appendChild(styleTag);
+    </script>
+</body>
+</html>
